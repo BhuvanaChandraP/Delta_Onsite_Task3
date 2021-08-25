@@ -12,11 +12,9 @@ const UserSchema = new Schema({
         lowercase: true
     },   
     
-    teams:{
-        type:[String]
-    },
-    notification:{
-        type:[String]
+    colorPalette:{
+        type:[mongoose.Schema.Types.ObjectId],
+        ref:"Color"
     }
 
 

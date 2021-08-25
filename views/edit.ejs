@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit</title>
+    <style>
+        .group{
+          
+            display: flex;
+            flex-direction: row;
+        }
+        .c{
+            width: 100px;
+            height: 100px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Hi</h1>
+    <%= eachcolor %> 
+    <% let use %> 
+    <% use = n._id %> 
+    <% let c = eachcolor.colors %>
+    <div class = "group">
+        <% for(let i = 0;i<c.length;i++){ %> 
+            <div class = "column">
+                <button class = "b">X</button>
+                <div class = "c"></div>
+            </div>
+            <!-- <div class = "column">
+                <div class = "color" class = "c"></div>
+            </div> -->
+        <% } %> 
+    </div> 
+    <button onclick="add()">Add</button>
+    <button onclick="shuffle()">shuffle</button>
+    <button onclick="send()">Save</button>
+    <script>
+        let ccc = '<%- c %>'; 
+        let cc = document.querySelectorAll('.c');
+        ccc = ccc.split("),");
+        for(let i =0;i<ccc.length-1;i++)
+        {
+            ccc[i] = ccc[i] + ')';
+        }
+        for(let i =0;i<ccc.length;i++)
+        {
+            cc[i].style.backgroundColor = ccc[i];
+        }
+
+        let ctr =0,ctr1=0;
+        let cm;
+        let colors = document.querySelectorAll(".c")
+        let i = '<%- use %>'
+        localStorage.setItem("id" , i);
+        function generateRandomColor()
+        {
+            var randomColor = '#'+Math.floor(Math.random()*16777215).toString(16);
+            return randomColor;
+        }
+        function count(){
+            ctr = 0;
+            colors = document.querySelectorAll(".c")
+            colors.forEach(c => {
+               ctr++;
+            });
+            return ctr ;
+        }
+       
+        function shuffle(){
+
+            colors.forEach((cm) => {
+            cm.style.backgroundColor = generateRandomColor();
+            });
+        }
+        let buttons = document.querySelectorAll(".b");
+        buttons.forEach((button)=>{
+            button.addEventListener('click',()=>{
+                ctr1 = count();
+                console.log(ctr1);
+                if(ctr1 > 2)
+                {
+                    button.parentNode.parentNode.removeChild(button.parentNode);
+                }
+                
+                
+            })
+        })
+        function add()
+        {
+            
+            var div = document.createElement('div');
+            div.setAttribute("class", "column");
+             document.querySelector(".group").appendChild(div);
+             
+             var bb = document.createElement('button');
+
+             bb.setAttribute("class" , "b");
+             bb.innerText = "X"
+             
+             div.appendChild(bb);
+             var cc = document.createElement('div');
+             cc.setAttribute("class", "c");
+             div.appendChild(cc);
+             cc.style.backgroundColor = generateRandomColor();
+                bb.addEventListener('click',()=>{
+                    bb.parentNode.parentNode.removeChild(bb.parentNode);
+                
+                })
+             //document.getElementById("c").style.backgroundColor = generateRandomColor();
+        }
+
+
+        let url1 = window.location.href;
+        let ind1 = url1.indexOf('edit/');
+        let channel1 = url1.substr(ind1+'edit/'.length);
+        function send () {
+            let sendingColors = [];
+            let colorSend = document.querySelectorAll('.c');
+            colorSend.forEach((color)=>{
+                sendingColors.push(color.style.backgroundColor);
+            })
+            const data = {
+                colors : sendingColors,
+                colorId : channel1
+            }
+            console.log(data);
+            var xhr = new window.XMLHttpRequest()
+            xhr.open('POST', "http://localhost:3030/edit" , true)
+            xhr.setRequestHeader('Content-Type', 'application/json;charset=UTF-8')
+            xhr.send(JSON.stringify(data));
+            alert("Your Pallete is updated!");
+            location.reload();
+        }
+
+
+       
+    </script>
+</body>
+</html>

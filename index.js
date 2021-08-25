@@ -6,11 +6,11 @@ const flash = require('connect-flash');
 const passport = require('passport');
 const LocalStrategy = require('passport-local');
 const methodOverride = require('method-override');
-
+var bodyParser = require('body-parser')
 const {checkAuth} = require('./src/middleware/checkAuth');
 
 const User = require("./src/models/user");
-
+const Color = require("./src/models/color");
 
 const home = require('./src/routes/home');
 
@@ -18,9 +18,9 @@ const home = require('./src/routes/home');
 
 mongoose.connect('mongodb://localhost:27017/delta-onsite3', {
     useNewUrlParser: true,
-    //useCreateIndex: true,
+    
     useUnifiedTopology: true,
-    //useFindAndModify: false
+    
 });
 
 const db = mongoose.connection;
@@ -35,9 +35,9 @@ app.set('views', path.join(__dirname, 'views'))
 
 
 
-app.use(express.urlencoded({ extended: true }));
-app.use(methodOverride('_method'));
-
+app.use(express.urlencoded({ extended: false }));
+// app.use(methodOverride('_method'));
+app.use(bodyParser.json())
 const sessionConfig = {
     secret: 'thisshouldbeabettersecret!',
     resave: false,
@@ -70,7 +70,22 @@ passport.deserializeUser(User.deserializeUser());
 
 app.use(home);
 
+app.post('/save' ,checkAuth,async(req,res)=>{
+    const colors1 = new Color(req.body);
+    await colors1.save();
+    const user = await User.findById(req.body.owner);
+    user.colorPalette = user.colorPalette.concat(colors1._id);
+    await user.save({});
+    res.end();
+})
 
+app.post('/edit',async(req,res)=>{
+    const colorPal = await Color.findById(req.body.colorId);
+    colorPal.colors = req.body.colors;
+    await colorPal.save();
+    console.log(colorPal)
+    res.end();
+})
 
 app.listen(3030, () => {
     console.log('Listening on port 3030');

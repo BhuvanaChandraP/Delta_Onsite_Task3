@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        .group{
+          
+            display: flex;
+            flex-direction: row;
+        }
+        .color{
+            width: 100px;
+            height: 100px;
+        }
+    </style>
+</head>
+<body>
+    <h1>hi</h1>
+    <%= eachcolor %> 
+    <% let c = eachcolor.colors %>
+    <div class = "group">
+        <% for(let i = 0;i<c.length;i++){ %> 
+            <div class = "column">
+                <div class = "color"></div>
+            </div>
+        <% } %> 
+    </div> 
+    <a href = "/delete/<%= eachcolor._id %>">Delete</a>
+    <a href = "/edit/<%= eachcolor._id %>">Edit</a>
+    <script>
+        let c = '<%- c %>'; 
+        let cc = document.querySelectorAll('.color');
+        c = c.split("),");
+        for(let i =0;i<c.length-1;i++)
+        {
+            c[i] = c[i] + ')';
+        }
+        for(let i =0;i<c.length;i++)
+        {
+            cc[i].style.backgroundColor = c[i];
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home</title>
+    <style>
+        .group{
+            display: flex;
+            flex-direction: row;
+        }
+        .c{
+            width: 100px;
+            height: 100px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Hi</h1>
+    <a href="/dashboard">Dashboard</a>
+    <% let use %> 
+    <% use = n._id %> 
+    <div class = "group">
+        <div class = "column">
+            <button class = "b">X</button>
+            <div class = "c"></div>
+        </div>
+        <div class = "column">
+            <button class = "b">X</button>
+            <div class = "c"></div>
+        </div>
+        <div class = "column">
+            <button class = "b">X</button>
+            <div class = "c"></div>
+        </div>
+        <div class = "column">
+            <button class = "b">X</button>
+            <div class = "c"></div>
+        </div>
+        <div class = "column">
+            <button class = "b">X</button>
+            <div class = "c"></div>
+        </div>
+
+    </div>
+    <form>
+        <input type="text" name = "title" id = "title">
+    </form>
+    <button onclick="add()">Add</button>
+    <button onclick="send()">Save</button>
+    <script>
+        let ctr =0,c;
+        let colors = document.querySelectorAll(".c")
+        let i = '<%- use %>'
+        localStorage.setItem("id" , i);
+        function generateRandomColor()
+        {
+            var randomColor = '#'+Math.floor(Math.random()*16777215).toString(16);
+            return randomColor;
+        }
+        function count(){
+            ctr = 0;
+            colors = document.querySelectorAll(".c")
+            colors.forEach(c => {
+               ctr++;
+            });
+            return ctr ;
+        }
+        colors.forEach(c => {
+            c.style.backgroundColor = generateRandomColor();
+        });
+        
+        function add()
+        {
+            
+            var div = document.createElement('div');
+            div.setAttribute("class", "column");
+             document.querySelector(".group").appendChild(div);
+             
+             var bb = document.createElement('button');
+
+             bb.setAttribute("class" , "b");
+             bb.innerText = "X"
+             
+             div.appendChild(bb);
+             var cc = document.createElement('div');
+             cc.setAttribute("class", "c");
+             div.appendChild(cc);
+             cc.style.backgroundColor = generateRandomColor();
+             //document.getElementById("c").style.backgroundColor = generateRandomColor();
+        }
+        let buttons = document.querySelectorAll(".b");
+        buttons.forEach((button)=>{
+            button.addEventListener('click',()=>{
+                c = count();
+                console.log(c);
+                if(c > 2)
+                {
+                    button.parentNode.parentNode.removeChild(button.parentNode);
+                }
+                
+                
+            })
+        })
+        function send()
+        {
+            tit = document.getElementById("title").value;
+            let colors1 = [];
+            let color2 = document.querySelectorAll('.c');
+            color2.forEach((color)=>{
+                colors1.push(color.style.backgroundColor);
+            })
+            let Uid = localStorage.getItem("id");
+            console.log(Uid);
+            const data = {
+                colors : colors1,
+                owner : Uid,
+                title : tit
+
+            }
+            console.log(data);
+            var xhr = new window.XMLHttpRequest();
+            xhr.open('POST' , "http://localhost:3030/save",true);
+            xhr.setRequestHeader('content-Type','application/json;charset=UTF-8');
+            xhr.send(JSON.stringify(data));
+            alert("Saved succesfully");
+        }
+    </script>
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

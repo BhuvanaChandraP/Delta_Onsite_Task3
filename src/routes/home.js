@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 const passport = require('passport');
 const User = require("../models/user");
+const Color = require("../models/color");
 const {checkAuth} =require('../middleware/checkAuth');
 
 
@@ -58,11 +59,36 @@ router.post('/login', passport.authenticate('local', {failureFlash : true, failu
 });
 
 router.get('/home' , checkAuth ,async(req,res)=>{
-    res.send("hi");
+    res.render('home' ,{n:req.user});
 })
 
 
-
+// router.post('/save' , checkAuth, async(req,res)=>{
+//     const { v1,v2,v3,v4,v5,v6,v7} = req.body;
+//     const color = new Color({ v1,v2,v3,v4,v5 ,v6,v7, owner:req.user});
+//     await color.save();
+//     console.log(color);
+//     console.log(req.body);
+//     res.redirect('/home');
+// })
+router.get('/dashboard' , checkAuth , async(req,res)=>{
+    colors = await Color.find({ owner : req.user}).populate('owner')
+    res.render('dashboard' , {colors});
+})
+router.get('/show/:id',checkAuth,async(req,res)=>{
+    const eachcolor = await Color.findById(req.params.id)
+    res.render('each' , { eachcolor })
+})
+router.get('/delete/:id',checkAuth,async(req,res)=>{
+    await Color.findByIdAndDelete(req.params.id)
+    res.redirect('/home');
+    //res.render('each' , { eachcolor })
+})
+router.get('/edit/:id',checkAuth,async(req,res)=>{
+    const eachcolor = await Color.findById(req.params.id)
+    res.render('edit' , { eachcolor ,n:req.user })
+    
+})
 router.get('/logout',async(req,res)=>{
     req.logout();
     req.flash('success',"Successfully Logged Out");
