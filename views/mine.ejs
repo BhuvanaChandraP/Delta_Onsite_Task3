@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Home</title>
+    <title>Document</title>
     <style>
         body{
             text-align: center;
@@ -69,6 +69,18 @@
             background-color: chartreuse;
             color: rgb(0, 0, 0);
         }
+        .b1{
+            background-color: white;
+            color: black;
+            border: 2px solid #4CAF50; 
+            font-size: 20px;
+            padding: 5px;
+            border-radius: 5px;
+        }
+        .b1:hover{
+            background-color: chartreuse;
+            color: rgb(0, 0, 0);
+        }
         /* #add:hover{
 
         } */
@@ -86,39 +98,44 @@
             
            }
         }
+       
     </style>
 </head>
 <body>
-    <%- include('partials/navbar') %>
-   
     
     <% let use %> 
     <% use = n._id %> 
+    <%- include('partials/navbar') %>
     <div class = "group">
         <div class = "column">
-            
-            <div class = "c"></div>
             <button class = "b">X</button>
+            <div class = "c" style="background-color: blueviolet;"></div>
+            <input type = "color" class = "in" >
+            <button class = "b1">ok</button>
         </div>
         <div class = "column">
-            
-            <div class = "c"></div>
             <button class = "b">X</button>
+            <div class = "c" style="background-color: rgb(226, 177, 43);"></div>
+            <input type = "color" class = "in">
+            <button class = "b1">ok</button>
         </div>
         <div class = "column">
-            
-            <div class = "c"></div>
             <button class = "b">X</button>
+            <div class = "c" style="background-color: rgb(43, 226, 165);"></div>
+            <input type = "color" class = "in">
+            <button class = "b1">ok</button>
         </div>
         <div class = "column">
-            
-            <div class = "c"></div>
             <button class = "b">X</button>
+            <div class = "c" style="background-color: rgb(226, 49, 43);"></div>
+            <input type = "color" class = "in">
+            <button class = "b1">ok</button>
         </div>
         <div class = "column">
-            
-            <div class = "c"></div>
             <button class = "b">X</button>
+            <div class = "c" style="background-color: rgb(226, 43, 150);" ></div>
+            <input type = "color" class = "in">
+            <button class = "b1">ok</button>
         </div>
 
     </div>
@@ -147,9 +164,17 @@
             });
             return ctr ;
         }
-        colors.forEach(c => {
-            c.style.backgroundColor = generateRandomColor();
-        });
+        // function make(){
+        //     console.log("got");
+        //         colors.forEach(c => {
+        //         c.style.backgroundColor = c.parentNode.querySelector('.in').value;
+        //         console.log(c.parentNode.querySelector('.in').value)
+        //     });
+         
+        // }
+        // colors.forEach(c => {
+        //     c.style.backgroundColor = c.parentNode.querySelector('.in').value
+        // });
         
         function add()
         {
@@ -158,20 +183,38 @@
             div.setAttribute("class", "column");
              document.querySelector(".group").appendChild(div);
              
-           
+             var bb = document.createElement('button');
+
+             bb.setAttribute("class" , "b");
+             bb.innerText = "X"
+             
+             div.appendChild(bb);
+
              var cc = document.createElement('div');
              cc.setAttribute("class", "c");
              div.appendChild(cc);
              cc.style.backgroundColor = generateRandomColor();
-             var bb = document.createElement('button');
+             
+             var ii = document.createElement('input');
+             ii.setAttribute("class", "in");
+             ii.setAttribute("type", "color");
+             div.appendChild(ii);
+             var bb1 = document.createElement('button');
 
-            bb.setAttribute("class" , "b");
-            bb.innerText = "X"
-
-            div.appendChild(bb);
+             bb1.setAttribute("class" , "b1");
+             bb1.innerText = "Ok"
+             
+             div.appendChild(bb1);
              bb.addEventListener('click',()=>{
                     bb.parentNode.parentNode.removeChild(bb.parentNode);
                 
+                })
+                bb1.addEventListener('click',()=>{
+                   
+                    var val = ii.parentNode.querySelector('.in').value
+                    var xx = ii.parentNode.querySelector('.c')
+                    xx.style.backgroundColor = val;
+                    make();
                 })
              //document.getElementById("c").style.backgroundColor = generateRandomColor();
         }
@@ -184,6 +227,22 @@
                 {
                     button.parentNode.parentNode.removeChild(button.parentNode);
                 }
+                
+                
+            })
+        })
+        let inputs = document.querySelectorAll(".b1");
+        inputs.forEach((inn)=>{
+            inn.addEventListener('click',()=>{
+                    console.log(inn.parentNode.querySelector('.c'));
+                    console.log(inn.parentNode.parentNode);
+                    var val = inn.parentNode.querySelector('.in').value
+                    var xx = inn.parentNode.querySelector('.c')
+                    xx.style.backgroundColor = val;
+                    make();
+                    // inn.parentNode.parentNode.
+                    // inn.parentNode.parentNode.removeChild(button.parentNode);
+              
                 
                 
             })
@@ -214,20 +273,3 @@
     </script>
 </body>
 </html>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

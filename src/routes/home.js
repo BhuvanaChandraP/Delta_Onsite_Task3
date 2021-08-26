@@ -89,6 +89,9 @@ router.get('/edit/:id',checkAuth,async(req,res)=>{
     res.render('edit' , { eachcolor ,n:req.user })
     
 })
+router.get('/makeOwn' , checkAuth , async(req,res)=>{
+    res.render('mine', {n:req.user});
+})
 router.get('/logout',async(req,res)=>{
     req.logout();
     req.flash('success',"Successfully Logged Out");

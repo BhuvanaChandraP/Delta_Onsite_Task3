@@ -3,33 +3,80 @@
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href='https://fonts.googleapis.com/css?family=Sofia' rel='stylesheet'>
     <title>Document</title>
     <style>
-        .group{
-            display: flex;
-            flex-direction: row;
+        body{
+            text-align: center;
+            background-color: rgb(248, 205, 255);
         }
-        .c{
+        #my{
+            margin-top: 40px;
+            /* font-size: xx-large; */
+            font-family: 'Sofia';font-size: 72px;
+        }
+        table, td, th {
+        border: 1px solid black;
+        padding: 3px;
+        }
+
+        table {
+            margin: auto;
+        width: fit-content;
+        border-collapse: collapse;
+        font-size: 20px;
+        }
+        .l{
+            text-decoration: none;
+            color: black;
             
-            
-            width: 100px;
-            height: 100px;
-            /* background-color: aquamarine; */
+        }
+        @media (max-width: 980px){
+            #my{
+                font-size: 50px;
+            }
+        }
        
-        }
+        /* a{
+            text-decoration: none;
+        } */
     </style>
 </head>
 <body>
-    <h1>hi</h1>
-    <% for(let i =0;i<colors.length ; i++){ %> 
-        <% if(colors[i].title == ""){ %> 
-            <a href = "/show/<%= colors[i]._id %>">link</a><br>
-        <% }else{ %> 
-            <a href = "/show/<%= colors[i]._id %>"><%= colors[i].title %></a><br>
-        <% } %> 
-    <% } %> 
+    <%- include('partials/navbar') %>
+    <h1 id = "my">My Collections</h1>
+    <table>
+        <tr>
+          <th>Pallete Number</th>
+          <th>Title</th>
+        </tr>
+       
+        
+     
+      
     
+    
+        <% let ctr =0 , ctr1 =0 %>
+        <% for(let i =0;i<colors.length ; i++){ %> 
+            <% ctr1++ %> 
+            <% if(colors[i].title == ""){ %> 
+                <% ctr++ %> 
+                <tr>
+                    <td><%= ctr1 %> </td>
+                    <td><a href = "/show/<%= colors[i]._id %>" class="l"><%= ctr %> </a></td>
+                  </tr>
+               
+            <% }else{ %> 
+                <tr>
+                    <td><%= ctr1 %> </td>
+                    <td><a href = "/show/<%= colors[i]._id %>" class="l"><%= colors[i].title %></a></td>
+                  </tr>
+                
+            <% } %> 
+        <% } %> 
+    </table>
      <script>
         
      </script>
